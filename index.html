@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Foo</title>
+<meta charset='utf-8' />
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+<style type='text/css'>
+body {
+  background:#1C1D26;
+  color:#e2e3e3;
+  font-family:'Georgia';
+  margin:0;
+}
+
+@-webkit-keyframes blinker {
+  from { opacity: 1.0; }
+  to { opacity: 0.0; }
+}
+
+em {
+  -webkit-animation-name: blinker;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+  -webkit-animation-duration: 800ms;
+}
+
+strong {
+  font-weight:normal;
+  color:#BF8D7A;
+}
+
+a {
+  color:#45578C;
+  text-decoration:none;
+}
+
+div {
+  cursor:pointer;
+  cursor:hand;
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+</style>
+<script type='text/javascript'>
+window.onload = function() {
+    var s = document.getElementsByTagName('div'), cur = 0, ti;
+    if (!s) return;
+    function go(n) {
+        cur = n;
+        var i = 1e3, e = s[n], t;
+        document.body.className = e.dataset.bodyclass || '';
+        for (var k = 0; k < s.length; k++) s[k].style.display = 'none';
+        e.style.display = 'inline';
+        e.style.fontSize = i + 'px';
+        if (e.firstChild && e.firstChild.nodeName === 'IMG') {
+            document.body.style.backgroundImage = 'url(' + e.firstChild.src + ')';
+            e.firstChild.style.display = 'none';
+            if ('classList' in e) e.classList.add('imageText');
+        } else {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundColor = e.style.backgroundColor;
+        }
+        if (ti !== undefined) window.clearInterval(ti);
+        t = parseInt(e.dataset.timeToNext || 0, 10);
+        if (t > 0) ti = window.setTimeout(fwd, (t * 1000));
+        while (
+            e.offsetWidth > window.innerWidth ||
+            e.offsetHeight > window.innerHeight) {
+            e.style.fontSize = (i -= 2) + 'px';
+            if (i < 0) break;
+        }
+        e.style.marginTop = ((window.innerHeight - e.offsetHeight) / 2) + 'px';
+        if (window.location.hash !== n) window.location.hash = n;
+        document.title = e.textContent || e.innerText;
+    }
+    document.onclick = function() { go(++cur % (s.length)); };
+    function fwd() { go(Math.min(s.length - 1, ++cur)); }
+    function rev() { go(Math.max(0, --cur)); }
+    document.onkeydown = function(e) {
+        if (e.which === 39 || e.which === 34 || e.which === 40) fwd();
+        if (e.which === 37 || e.which === 33 || e.which === 38) rev();
+    };
+    document.ontouchstart = function(e) {
+        var x0 = e.changedTouches[0].pageX;
+        document.ontouchend = function(e) {
+            var x1 = e.changedTouches[0].pageX;
+            if (x1 - x0 < 0) fwd();
+            if (x1 - x0 > 0) rev();
+        };
+    };
+    function parse_hash() {
+        return Math.max(Math.min(
+            s.length - 1,
+            parseInt(window.location.hash.substring(1), 10)), 0);
+    }
+    if (window.location.hash) cur = parse_hash() || cur;
+    window.onhashchange = function() {
+        var c = parse_hash();
+        if (c !== cur) go(c);
+    };
+    go(cur);
+};
+</script></head><body>
+<div><h1 id="a-primer-for-mapbox-studio-https-www-mapbox-com-mapbox-studio-">A Primer for <a href="https://www.mapbox.com/mapbox-studio">Mapbox Studio</a></h1>
+<p>October 15, 2014</p>
+</div>
+<div><p>made for <a href="http://vcgi.vermont.gov/events/archive#webinar">the VCGI webinar series</a> by <a href="https://twitter.com/vtcraghead">Bill Morris</a></p>
+</div>
+<div><p>What&#39;s on deck?</p>
+</div>
+<div><ul>
+<li>Overview of tiles</li>
+<li>Signup and Installation</li>
+<li>A tour of the platform</li>
+<li>Anatomy of a code-driven map</li>
+<li>Cartography</li>
+<li>Publishing</li>
+</ul>
+</div>
+<div><ul>
+<li><em>Overview of tiles</em></li>
+<li>Signup and Installation</li>
+<li>A tour of the platform</li>
+<li>Anatomy of a code-driven map</li>
+<li>Cartography</li>
+<li>Publishing</li>
+</ul>
+</div>
+<div><p>Tiles?</p>
+</div>
+<div><p><img src="http://presentations.opengeo.org/2011_IMAK/Workshop_OpenSource_Stack/_images/training-tiling.png" alt="more tiles"></p>
+</div>
+<div><p><em>Raster</em> tiles</p>
+</div>
+<div><p><img src="http://mapschool.io/img/raster.png" alt="pixels by mapschool.io"></p>
+</div>
+<div><p><a href="http://bl.ocks.org/wboykinm/7393674">Vector tiles</a>?</p>
+</div>
+<div><p><img src="http://maptime.github.io/anatomy-of-a-web-map/images/vector_tiles.png" alt="Bill&#39;s vector tiles"></p>
+</div>
+<div><p>A vector tile is <a href="http://tile.openstreetmap.us/vectiles-highroad/12/656/1582.json">text, not image</a></p>
+</div>
+<div><p>Mapbox studio is the world&#39;s biggest pile of vector tiles, all ready for you to map with</p>
+</div>
+<div><ul>
+<li>Overview of tiles</li>
+<li><em>Signup and Installation</em></li>
+<li>A tour of the platform</li>
+<li>Anatomy of a code-driven map</li>
+<li>Cartography</li>
+<li>Publishing</li>
+</ul>
+</div>
+<div><p><a href="https://www.mapbox.com/account/">Sign up here</a>
+Using this promo code: MAPBOXFRIEND1</p>
+</div>
+<div><p><a href="https://www.mapbox.com/mapbox-studio">Download</a> and install Mapbox Studio if you haven&#39;t yet</p>
+</div>
+<div><p>Fire it up!</p>
+</div>
+<div><ul>
+<li>Overview of tiles</li>
+<li>Signup and Installation</li>
+<li><em>A tour of the platform</em></li>
+<li>Anatomy of a code-driven map</li>
+<li>Cartography</li>
+<li>Publishing</li>
+</ul>
+</div>
+<div><p>A lot going on there, but let&#39;s focus on the guts</p>
+</div>
+<div><ul>
+<li>Overview of tiles</li>
+<li>Signup and Installation</li>
+<li>A tour of the platform</li>
+<li><em>Anatomy of a code-driven map</em></li>
+<li>Cartography</li>
+<li>Publishing</li>
+</ul>
+</div>
+<div><p><a href="https://www.mapbox.com/tilemill/docs/manual/carto/">CartoCSS</a> is cool and simple</p>
+</div>
+<div><p>line-color: blue;</p>
+</div>
+<div><p>(It can definitely get complicated, but so can life)</p>
+</div>
+<div><ul>
+<li>Overview of tiles</li>
+<li>Signup and Installation</li>
+<li>A tour of the platform</li>
+<li>Anatomy of a code-driven map</li>
+<li><em>Cartography</em></li>
+<li>Publishing</li>
+</ul>
+</div>
+<div><p>Let&#39;s look at a few styles:</p>
+</div>
+<div><p>Basic</p>
+</div>
+<div><p>Terrain</p>
+</div>
+<div><p>Texture</p>
+</div>
+<div><p>Sketchy</p>
+</div>
+<div><ul>
+<li>Overview of tiles</li>
+<li>Signup and Installation</li>
+<li>A tour of the platform</li>
+<li>Anatomy of a code-driven map</li>
+<li>Cartography</li>
+<li><em>Publishing</em></li>
+</ul>
+</div>
+<div><p>We didn&#39;t really have time to get to <a href="https://www.mapbox.com/mapbox-studio/source-quickstart/">sources</a>, but that&#39;s where your own data comes into play.</p>
+</div>
+<div><p>Thanks! Happy mapping!
+Get in touch at bill@faraday.io</p>
+</div>
